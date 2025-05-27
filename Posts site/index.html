@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Post Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .add-post {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .plus-btn {
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .plus-btn:hover {
+            background-color: #45a049;
+        }
+        #post-input, #username-input {
+            display: none;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #username-input {
+            width: 150px;
+        }
+        #post-input {
+            flex: 1;
+        }
+        .post-list {
+            list-style: none;
+            padding: 0;
+        }
+        .post-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .post-username {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Post Creator</h1>
+    <div class="add-post">
+        <button class="plus-btn" onclick="toggleInput()">+</button>
+        <input type="text" id="username-input" placeholder="Your username..." onkeypress="handleKeyPress(event)">
+        <input type="text" id="post-input" placeholder="Type your post..." onkeypress="handleKeyPress(event)">
+    </div>
+    <ul class="post-list" id="post-list"></ul>
+
+    <script>
+        function toggleInput() {
+            const usernameInput = document.getElementById('username-input');
+            const postInput = document.getElementById('post-input');
+            const isHidden = usernameInput.style.display === 'none';
+            usernameInput.style.display = isHidden ? 'block' : 'none';
+            postInput.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) {
+                usernameInput.focus();
+            }
+        }
+
+        function addPost(username, text) {
+            if (username.trim() === '' || text.trim() === '') return;
+            const postList = document.getElementById('post-list');
+            const postItem = document.createElement('li');
+            postItem.className = 'post-item';
+            const usernameDiv = document.createElement('div');
+            usernameDiv.className = 'post-username';
+            usernameDiv.textContent = username;
+            const postContent = document.createElement('div');
+            postContent.textContent = text;
+            postItem.appendChild(usernameDiv);
+            postItem.appendChild(postContent);
+            postList.prepend(postItem);
+            document.getElementById('username-input').value = '';
+            document.getElementById('post-input').value = '';
+            document.getElementById('username-input').style.display = 'none';
+            document.getElementById('post-input').style.display = 'none';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                const usernameInput = document.getElementById('username-input');
+                const postInput = document.getElementById('post-input');
+                addPost(usernameInput.value, postInput.value);
+            }
+        }
+    </script>
+</body>
+</html>
